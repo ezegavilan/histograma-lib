@@ -28,7 +28,7 @@ public class Histograma {
         float inf, sup, marcaClase;
 
         inf = 0.0f;
-        sup = tamIntervalo;
+        sup = tamIntervalo - 0.00001f;
         for (int i = 0; i < cantidadIntervalos; i++) {
             intervalo = i + 1;
             if (intervalo == 1) {
@@ -39,8 +39,8 @@ public class Histograma {
                 continue;
             }
 
-            inf = calcularLimiteInferior(sup);
-            sup = calcularLimiteSuperior(tamIntervalo, sup);
+            inf = calcularLimiteInferior(inf, tamIntervalo);
+            sup = calcularLimiteSuperior(inf, tamIntervalo);
             marcaClase = calcularMarcaClase(inf ,sup);
 
             intervaloNuevo = new Intervalo(intervalo, inf, sup, marcaClase, frecuenciaEsperada);
@@ -68,7 +68,7 @@ public class Histograma {
                 inf = intervaloActual.getInferior();
                 sup = intervaloActual.getSuperior();
 
-                if (rnd >= inf && rnd < sup) {
+                if (rnd >= inf && rnd <= sup && rnd != 1) {
                     intervaloActual.registrarObservacion();
                 }
             }
@@ -94,12 +94,12 @@ public class Histograma {
         return (inf + sup) / 2;
     }
 
-    private float calcularLimiteInferior(float supPrevio) {
-        return supPrevio + 0.0001f;
+    private float calcularLimiteInferior(float infAnterior, float rango) {
+        return infAnterior + rango;
     }
 
-    private float calcularLimiteSuperior(float tamIntervalo, float supPrevio) {
-        return supPrevio + tamIntervalo;
+    private float calcularLimiteSuperior(float infActual, float rango) {
+        return infActual + rango - 0.00001f;
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class HistogramaTest {
 
@@ -57,5 +57,19 @@ class HistogramaTest {
 
         System.out.println(histograma);
         assertEquals(50, primerIntervalo.getFrecuencia());
+    }
+
+    @Test
+    public void primerIntervaloInfShouldBe0Test() {
+        Intervalo primerIntervalo = histograma.getIntervalos().get(0);
+        float inferior = primerIntervalo.getInferior();
+        assertEquals(0.0f, inferior);
+    }
+
+    @Test
+    public void primerIntervaloSupShouldBe01999() {
+        Intervalo primerIntervalo = histograma.getIntervalos().get(0);
+        float superior = primerIntervalo.getSuperior();
+        assertEquals(0.19999f, superior);
     }
 }
