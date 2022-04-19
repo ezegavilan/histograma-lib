@@ -6,7 +6,7 @@
 
     <groupId>com.simulacion</groupId>
     <artifactId>histograma-lib</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -27,7 +27,6 @@
     </dependencies>
 
     <build>
-        <finalName>histograma-lib</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>

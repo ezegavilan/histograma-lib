@@ -59,6 +59,7 @@ public class Histograma {
         int totalObservados = muestra.size();
         float rnd, inf, sup;
 
+        float ultimoSuperior = intervalos.get(intervalos.size()-1).getSuperior() + 0.00001f;
         int frAcumuladaActual = 0;
         float propAcumuladaActual = 0f;
         for (int i = 0; i < intervalos.size(); i++) {
@@ -68,7 +69,7 @@ public class Histograma {
                 inf = intervaloActual.getInferior();
                 sup = intervaloActual.getSuperior();
 
-                if (rnd >= inf && rnd <= sup && rnd != 1) {
+                if (rnd >= inf && rnd <= sup && rnd != ultimoSuperior) {
                     intervaloActual.registrarObservacion();
                 }
             }
