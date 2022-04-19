@@ -21,10 +21,11 @@ class HistogramaTest {
         random.setSeed(11);
         muestra = new ArrayList<>();
         for (int i = 0; i < 300; i++) {
-            muestra.add(random.nextFloat());
+            muestra.add(Decimal.of(random.nextFloat()).value());
         }
         histograma = new Histograma(5);
         histograma.generarHistograma(muestra);
+
     }
 
     @Test
@@ -56,20 +57,20 @@ class HistogramaTest {
         Intervalo primerIntervalo = histograma.getIntervalos().get(0);
 
         System.out.println(histograma);
-        assertEquals(50, primerIntervalo.getFrecuencia());
+        assertEquals(51, primerIntervalo.getFrecuencia());
     }
 
     @Test
-    public void primerIntervaloInfShouldBe0Test() {
+    public void primerIntervaloInfShouldBeTest() {
         Intervalo primerIntervalo = histograma.getIntervalos().get(0);
         float inferior = primerIntervalo.getInferior();
-        assertEquals(0.0f, inferior);
+        assertEquals(0.0039f, inferior);
     }
 
     @Test
-    public void primerIntervaloSupShouldBe01999() {
+    public void primerIntervaloSupShouldBe() {
         Intervalo primerIntervalo = histograma.getIntervalos().get(0);
         float superior = primerIntervalo.getSuperior();
-        assertEquals(0.19999f, superior);
+        assertEquals(0.2026f, superior);
     }
 }

@@ -1,9 +1,7 @@
 package com.simulacion.histogramalib;
 
-import com.simulacion.histogramalib.core.Histograma;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @author ezegavilan95
@@ -11,7 +9,7 @@ import java.util.List;
  */
 public class Application {
     public static void main(String[] args) {
-        List<Float> muestra = new ArrayList<>();
+        /*List<Float> muestra = new ArrayList<>();
         for (int i = 0; i < 150; i++) {
             muestra.add((float) Math.random());
         }
@@ -19,6 +17,11 @@ public class Application {
         Histograma histograma = new Histograma(5);
         histograma.generarHistograma(muestra);
 
-        System.out.println(histograma);
+        System.out.println(histograma);*/
+        float fl = 0.12165618f;
+        System.out.println(fl);
+
+        BigDecimal flBd = new BigDecimal(fl).setScale(4, RoundingMode.HALF_EVEN);
+        System.out.println(flBd.floatValue());
     }
 }

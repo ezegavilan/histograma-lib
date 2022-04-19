@@ -1,11 +1,13 @@
 package com.simulacion.histogramalib.core;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Histograma {
     private final List<Intervalo> intervalos;
     private final int cantidadIntervalos;
+    private final Decimal DIFF = Decimal.of(0.0001f);
 
     public Histograma(int cantidadIntervalos) {
         this.intervalos = new ArrayList<>();
@@ -14,21 +16,21 @@ public class Histograma {
 
     public void generarHistograma(List<Float> muestra) {
         int n = muestra.size();
-        crearIntervalos(cantidadIntervalos, n);
+        crearIntervalos(muestra, n);
 
         cargarObservaciones(muestra);
     }
 
-    private void crearIntervalos(int cantidadIntervalos, int n) {
-        float tamIntervalo = 1F/cantidadIntervalos;
+    private void crearIntervalos(List<Float> muestra, int n) {
+        float tamIntervalo = this.calcularRangoIntervalos(muestra, cantidadIntervalos);
         float frecuenciaEsperada = this.calcularFrecuenciaEsperada(n, cantidadIntervalos);
 
         Intervalo intervaloNuevo;
         int intervalo;
         float inf, sup, marcaClase;
 
-        inf = 0.0f;
-        sup = tamIntervalo - 0.00001f;
+        inf = this.min(muestra);
+        sup = inf + tamIntervalo - DIFF.value();
         for (int i = 0; i < cantidadIntervalos; i++) {
             intervalo = i + 1;
             if (intervalo == 1) {
@@ -41,16 +43,15 @@ public class Histograma {
 
             inf = calcularLimiteInferior(inf, tamIntervalo);
             sup = calcularLimiteSuperior(inf, tamIntervalo);
-            marcaClase = calcularMarcaClase(inf ,sup);
+            marcaClase = calcularMarcaClase(inf, sup);
 
+            if (intervalo == cantidadIntervalos) {
+                sup = this.max(muestra);
+            }
             intervaloNuevo = new Intervalo(intervalo, inf, sup, marcaClase, frecuenciaEsperada);
 
             intervalos.add(intervaloNuevo);
         }
-    }
-
-    private float calcularFrecuenciaEsperada(int n, int k) {
-        return (float) n/k;
     }
 
     private void cargarObservaciones(List<Float> muestra) {
@@ -59,7 +60,7 @@ public class Histograma {
         int totalObservados = muestra.size();
         float rnd, inf, sup;
 
-        float ultimoSuperior = intervalos.get(intervalos.size()-1).getSuperior() + 0.00001f;
+        float ultimoSuperior = intervalos.get(intervalos.size()-1).getSuperior() + DIFF.value();
         int frAcumuladaActual = 0;
         float propAcumuladaActual = 0f;
         for (int i = 0; i < intervalos.size(); i++) {
@@ -83,24 +84,41 @@ public class Histograma {
         }
     }
 
+    private float calcularFrecuenciaEsperada(int n, int k) {
+        return Decimal.of((float) n/k).value();
+    }
+
+    private float calcularRangoIntervalos(List<Float> muestra, int cantidadIntervalos) {
+        float min, max, diff;
+        max = this.max(muestra);
+        min = this.min(muestra);
+        diff = max - min;
+
+        return Decimal.of(diff / cantidadIntervalos).value();
+    }
+
+    private float max(List<Float> muestra) {
+        return Decimal.of(Collections.max(muestra)).value();
+    }
+
+    private float min(List<Float> muestra) {
+        return Decimal.of(Collections.min(muestra)).value();
+    }
+
     public List<Intervalo> getIntervalos() {
         return intervalos;
     }
 
-    public int getCantidadIntervalos() {
-        return cantidadIntervalos;
-    }
-
     private float calcularMarcaClase(float inf, float sup) {
-        return (inf + sup) / 2;
+        return Decimal.of((inf + sup) / 2).value();
     }
 
     private float calcularLimiteInferior(float infAnterior, float rango) {
-        return infAnterior + rango;
+        return Decimal.of(infAnterior + rango).value();
     }
 
     private float calcularLimiteSuperior(float infActual, float rango) {
-        return infActual + rango - 0.00001f;
+        return Decimal.of(infActual + rango - DIFF.value()).value();
     }
 
     @Override
