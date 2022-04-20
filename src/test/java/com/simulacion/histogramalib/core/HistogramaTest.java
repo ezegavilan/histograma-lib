@@ -14,7 +14,8 @@ class HistogramaTest {
 
     List<Float> muestra;
     Random random;
-    Histograma histograma;
+    Histograma histoUniforme;
+    Histograma histoExpNegativa;
 
     @BeforeEach
     void setUp() {
@@ -24,29 +25,32 @@ class HistogramaTest {
         for (int i = 0; i < 300; i++) {
             muestra.add(Decimal.of(random.nextFloat()).value());
         }
-        histograma = HistogramaFactory.get(DistribucionEnum.UNIFORME_AB, 5);
-        histograma.generarHistograma(muestra);
+
+        histoExpNegativa = HistogramaFactory.get(DistribucionEnum.EXPONENCIAL_NEGATIVA, 5);
+        histoExpNegativa.generarHistograma(muestra);
+        histoUniforme = HistogramaFactory.get(DistribucionEnum.UNIFORME_AB, 5);
+        histoUniforme.generarHistograma(muestra);
     }
 
     @Test
     public void frecuenciaAcumuladaShouldBeNTest() {
-        int indexUltimoIntervalo = histograma.getIntervalos().size() - 1;
-        Intervalo ultimoIntervalo = histograma.getIntervalos().get(indexUltimoIntervalo);
+        int indexUltimoIntervalo = histoUniforme.getIntervalos().size() - 1;
+        Intervalo ultimoIntervalo = histoUniforme.getIntervalos().get(indexUltimoIntervalo);
 
         assertEquals(muestra.size(), ultimoIntervalo.getFrecuenciaAcumulada());
     }
 
     @Test
     public void primerFrecuenciaIgualPrimerFrecuenciaAcumuladaTest() {
-        Intervalo primerIntervalo = histograma.getIntervalos().get(0);
+        Intervalo primerIntervalo = histoUniforme.getIntervalos().get(0);
 
         assertEquals(primerIntervalo.getFrecuencia(), primerIntervalo.getFrecuenciaAcumulada());
     }
 
     @Test
     public void proporcionAcumuladaShouldBe1Test() {
-        int indexUltimoIntervalo = histograma.getIntervalos().size() - 1;
-        Intervalo ultimoIntervalo = histograma.getIntervalos().get(indexUltimoIntervalo);
+        int indexUltimoIntervalo = histoUniforme.getIntervalos().size() - 1;
+        Intervalo ultimoIntervalo = histoUniforme.getIntervalos().get(indexUltimoIntervalo);
 
         assertEquals(1.0f, ultimoIntervalo.getProporcionAcumulada());
     }
@@ -54,34 +58,37 @@ class HistogramaTest {
     @Test
     public void primerFrecuenciaTest() {
         // dada la semilla sabemos de antemano cuales son los rnd, y la frecuencia de los intervalos
-        Intervalo primerIntervalo = histograma.getIntervalos().get(0);
+        Intervalo primerIntervalo = histoUniforme.getIntervalos().get(0);
 
-        System.out.println(histograma);
+        System.out.println(histoUniforme);
         assertEquals(51, primerIntervalo.getFrecuencia());
     }
 
     @Test
     public void primerIntervaloInfShouldBeTest() {
-        Intervalo primerIntervalo = histograma.getIntervalos().get(0);
+        Intervalo primerIntervalo = histoUniforme.getIntervalos().get(0);
         float inferior = primerIntervalo.getInferior();
         assertEquals(0.0039f, inferior);
     }
 
     @Test
     public void primerIntervaloSupShouldBe() {
-        Intervalo primerIntervalo = histograma.getIntervalos().get(0);
+        Intervalo primerIntervalo = histoUniforme.getIntervalos().get(0);
         float superior = primerIntervalo.getSuperior();
         assertEquals(0.2026f, superior);
     }
 
     @Test
     public void histogramaExponencialNegativaFrecuenciaEsperadaTest() {
-        Histograma histoExpNegativa = HistogramaFactory.get(DistribucionEnum.EXPONENCIAL_NEGATIVA, 5);
-        histoExpNegativa.generarHistograma(muestra);
-
         float primerFE = histoExpNegativa.getIntervalos().get(0).getFrecuenciaEsperada();
         float segundoFE = histoExpNegativa.getIntervalos().get(1).getFrecuenciaEsperada();
-
         assertTrue(primerFE > segundoFE);
+    }
+
+    @Test
+    public void histogramaUniformeFrecuenciaEsperadaTest() {
+        float primerFE = histoUniforme.getIntervalos().get(0).getFrecuenciaEsperada();
+        float segundoFE = histoUniforme.getIntervalos().get(1).getFrecuenciaEsperada();
+        assertEquals(primerFE, segundoFE);
     }
 }
