@@ -10,7 +10,7 @@ public class HistogramaExponencialNegativa extends Histograma {
     }
 
     @Override
-    public float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float media) {
+    public float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float marcaClase, float media, float desvEstandar) {
         float lambda = 1f/media;
         float pac = (float) ((1 - Math.exp(-lambda * sup)) - (1 - Math.exp(-lambda * inf)));
         return Decimal.of(pac * n).value();

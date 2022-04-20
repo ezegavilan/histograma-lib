@@ -31,12 +31,13 @@ public abstract class Histograma {
 
         inf = this.min(muestra);
         sup = inf + tamIntervalo - DIFF.value();
+        float media = this.calcularMedia(muestra);
         for (int i = 0; i < cantidadIntervalos; i++) {
             intervalo = i + 1;
             if (intervalo == 1) {
                 marcaClase = calcularMarcaClase(inf, sup);
 
-                frecuenciaEsperada = calcularFrecuenciaEsperada(n, cantidadIntervalos, inf, sup, this.calcularMedia(muestra));
+                frecuenciaEsperada = calcularFrecuenciaEsperada(n, cantidadIntervalos, inf, sup, marcaClase, this.calcularMedia(muestra), this.calcularDesviacionEstandar(muestra));
                 intervaloNuevo = new Intervalo(intervalo, inf, sup, marcaClase, frecuenciaEsperada);
                 intervalos.add(intervaloNuevo);
                 continue;
@@ -46,7 +47,7 @@ public abstract class Histograma {
             sup = calcularLimiteSuperior(inf, tamIntervalo);
             marcaClase = calcularMarcaClase(inf, sup);
 
-            frecuenciaEsperada = this.calcularFrecuenciaEsperada(n, cantidadIntervalos, inf, sup, this.calcularMedia(muestra));
+            frecuenciaEsperada = this.calcularFrecuenciaEsperada(n, cantidadIntervalos, inf, sup, marcaClase, this.calcularMedia(muestra), this.calcularDesviacionEstandar(muestra));
 
             if (intervalo == cantidadIntervalos) {
                 sup = this.max(muestra);
@@ -57,7 +58,7 @@ public abstract class Histograma {
         }
     }
 
-    public abstract float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float media);
+    public abstract float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float marcaClase, float media, float desvEstandar);
 
     private void cargarObservaciones(List<Float> muestra) {
         Intervalo intervaloActual;
@@ -99,7 +100,19 @@ public abstract class Histograma {
         for (Float currentMuestra : muestra) {
             sum += currentMuestra;
         }
-        return Decimal.of((float) sum / n).value();
+        return Decimal.of(sum / n).value();
+    }
+
+    private float calcularDesviacionEstandar(List<Float> muestra) {
+        float media = this.calcularMedia(muestra);
+        int n = muestra.size();
+        float sum;
+        sum = 0f;
+        for (Float current : muestra) {
+            sum += (float) Math.pow((current - media), 2);
+        }
+        float aux = sum / (n - 1);
+        return Decimal.of((float) Math.sqrt(aux)).value();
     }
 
     private float calcularRangoIntervalos(List<Float> muestra, int cantidadIntervalos) {

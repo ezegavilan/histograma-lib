@@ -16,6 +16,7 @@ class HistogramaTest {
     Random random;
     Histograma histoUniforme;
     Histograma histoExpNegativa;
+    Histograma histoNormal;
 
     @BeforeEach
     void setUp() {
@@ -26,8 +27,12 @@ class HistogramaTest {
             muestra.add(Decimal.of(random.nextFloat()).value());
         }
 
+        histoNormal = HistogramaFactory.get(DistribucionEnum.NORMAL, 5);
+        histoNormal.generarHistograma(muestra);
+
         histoExpNegativa = HistogramaFactory.get(DistribucionEnum.EXPONENCIAL_NEGATIVA, 5);
         histoExpNegativa.generarHistograma(muestra);
+
         histoUniforme = HistogramaFactory.get(DistribucionEnum.UNIFORME_AB, 5);
         histoUniforme.generarHistograma(muestra);
     }
@@ -90,5 +95,15 @@ class HistogramaTest {
         float primerFE = histoUniforme.getIntervalos().get(0).getFrecuenciaEsperada();
         float segundoFE = histoUniforme.getIntervalos().get(1).getFrecuenciaEsperada();
         assertEquals(primerFE, segundoFE);
+    }
+
+    @Test
+    public void histogramaNormalFrecuenciaEsperadaTest() {
+        float primerFE = histoNormal.getIntervalos().get(0).getFrecuenciaEsperada();
+        float medioFE = histoNormal.getIntervalos().get(2).getFrecuenciaEsperada();
+        float ultimoFE = histoNormal.getIntervalos().get(4).getFrecuenciaEsperada();
+
+        assertTrue(primerFE < medioFE);
+        assertTrue(ultimoFE < medioFE);
     }
 }

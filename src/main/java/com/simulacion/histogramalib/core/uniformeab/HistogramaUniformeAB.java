@@ -10,7 +10,7 @@ public class HistogramaUniformeAB extends Histograma {
     }
 
     @Override
-    public float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float media) {
+    public float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float marcaClase, float media, float desvEstandar) {
         return Decimal.of((float) n/intervalos).value();
     }
 }
