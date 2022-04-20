@@ -2,6 +2,7 @@ package com.simulacion.histogramalib.core;
 
 import com.simulacion.histogramalib.core.eponencialnegativa.HistogramaExponencialNegativa;
 import com.simulacion.histogramalib.core.normal.HistogramaNormal;
+import com.simulacion.histogramalib.core.poisson.HistogramaPoisson;
 import com.simulacion.histogramalib.core.uniformeab.HistogramaUniformeAB;
 
 public class HistogramaFactory {
@@ -13,6 +14,8 @@ public class HistogramaFactory {
             return new HistogramaExponencialNegativa(intervalos);
         } else if (distribucion == DistribucionEnum.NORMAL) {
             return new HistogramaNormal(intervalos);
+        } else if (distribucion == DistribucionEnum.POISSON) {
+            return new HistogramaPoisson(intervalos);
         } else {
             throw new RuntimeException("Histograma no implementado");
         }

@@ -20,7 +20,7 @@ public abstract class Histograma {
         cargarObservaciones(muestra);
     }
 
-    private void crearIntervalos(List<Float> muestra, int n) {
+    protected void crearIntervalos(List<Float> muestra, int n) {
         float tamIntervalo = this.calcularRangoIntervalos(muestra, cantidadIntervalos);
         // float frecuenciaEsperada = this.calcularFrecuenciaEsperada(n, cantidadIntervalos);
         float frecuenciaEsperada;
@@ -31,7 +31,6 @@ public abstract class Histograma {
 
         inf = this.min(muestra);
         sup = inf + tamIntervalo - DIFF.value();
-        float media = this.calcularMedia(muestra);
         for (int i = 0; i < cantidadIntervalos; i++) {
             intervalo = i + 1;
             if (intervalo == 1) {
@@ -60,7 +59,7 @@ public abstract class Histograma {
 
     public abstract float calcularFrecuenciaEsperada(int n, int intervalos, float inf, float sup, float marcaClase, float media, float desvEstandar);
 
-    private void cargarObservaciones(List<Float> muestra) {
+    protected void cargarObservaciones(List<Float> muestra) {
         Intervalo intervaloActual;
 
         int totalObservados = muestra.size();
@@ -71,7 +70,7 @@ public abstract class Histograma {
         float propAcumuladaActual = 0f;
         for (int i = 0; i < intervalos.size(); i++) {
             intervaloActual = intervalos.get(i);
-            for (int j = 0; j < muestra.size(); j++) {
+            for (int j = 0; j < totalObservados; j++) {
                 rnd = muestra.get(j);
                 inf = intervaloActual.getInferior();
                 sup = intervaloActual.getSuperior();
@@ -94,7 +93,7 @@ public abstract class Histograma {
         return Decimal.of((float) n/k).value();
     }*/
 
-    private float calcularMedia(List<Float> muestra) {
+    protected float calcularMedia(List<Float> muestra) {
         int n = muestra.size();
         float sum = 0;
         for (Float currentMuestra : muestra) {
@@ -115,7 +114,7 @@ public abstract class Histograma {
         return Decimal.of((float) Math.sqrt(aux)).value();
     }
 
-    private float calcularRangoIntervalos(List<Float> muestra, int cantidadIntervalos) {
+    protected float calcularRangoIntervalos(List<Float> muestra, int cantidadIntervalos) {
         float min, max, diff;
         max = this.max(muestra);
         min = this.min(muestra);
@@ -124,11 +123,11 @@ public abstract class Histograma {
         return Decimal.of(diff / cantidadIntervalos).value();
     }
 
-    private float max(List<Float> muestra) {
+    protected float max(List<Float> muestra) {
         return Decimal.of(Collections.max(muestra)).value();
     }
 
-    private float min(List<Float> muestra) {
+    protected float min(List<Float> muestra) {
         return Decimal.of(Collections.min(muestra)).value();
     }
 

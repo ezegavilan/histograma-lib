@@ -1,5 +1,6 @@
 package com.simulacion.histogramalib.core;
 
+import com.simulacion.histogramalib.core.poisson.IntervaloPoisson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -105,5 +106,65 @@ class HistogramaTest {
 
         assertTrue(primerFE < medioFE);
         assertTrue(ultimoFE < medioFE);
+    }
+
+    @Test
+    public void histoPoissonValoresDiscretosTest() {
+        Histograma histoPoisson = HistogramaFactory.get(DistribucionEnum.POISSON, 1);
+        List<Float> muestra = new ArrayList<>();
+        muestra.add(14f);
+        muestra.add(7f);
+        muestra.add(13f);
+        muestra.add(16f);
+        muestra.add(16f);
+        muestra.add(13f);
+        muestra.add(14f);
+        muestra.add(17f);
+        muestra.add(15f);
+        muestra.add(16f);
+        muestra.add(13f);
+        muestra.add(15f);
+        muestra.add(10f);
+        muestra.add(15f);
+        muestra.add(16f);
+        muestra.add(14f);
+        muestra.add(12f);
+        muestra.add(17f);
+        muestra.add(14f);
+        muestra.add(12f);
+        muestra.add(13f);
+        muestra.add(20f);
+        muestra.add(8f);
+        muestra.add(17f);
+        muestra.add(19f);
+        muestra.add(11f);
+        muestra.add(12f);
+        muestra.add(17f);
+        muestra.add(9f);
+        muestra.add(18f);
+        muestra.add(20f);
+        muestra.add(10f);
+        muestra.add(18f);
+        muestra.add(15f);
+        muestra.add(13f);
+        muestra.add(16f);
+        muestra.add(24f);
+        muestra.add(18f);
+        muestra.add(16f);
+        muestra.add(18f);
+        muestra.add(12f);
+        muestra.add(14f);
+        muestra.add(20f);
+        muestra.add(15f);
+        muestra.add(10f);
+        muestra.add(13f);
+        muestra.add(21f);
+        muestra.add(23f);
+        muestra.add(15f);
+        muestra.add(18f);
+
+        histoPoisson.generarHistograma(muestra);
+        IntervaloPoisson intervalo8 = (IntervaloPoisson) histoPoisson.getIntervalos().get(7);
+        assertEquals(5, intervalo8.getFrecuenciaEsperadaPoisson());
     }
 }
