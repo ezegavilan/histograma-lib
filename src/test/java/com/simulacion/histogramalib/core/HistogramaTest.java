@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class HistogramaTest {
 
@@ -23,9 +24,8 @@ class HistogramaTest {
         for (int i = 0; i < 300; i++) {
             muestra.add(Decimal.of(random.nextFloat()).value());
         }
-        histograma = new Histograma(5);
+        histograma = HistogramaFactory.get(DistribucionEnum.UNIFORME_AB, 5);
         histograma.generarHistograma(muestra);
-
     }
 
     @Test
@@ -72,5 +72,16 @@ class HistogramaTest {
         Intervalo primerIntervalo = histograma.getIntervalos().get(0);
         float superior = primerIntervalo.getSuperior();
         assertEquals(0.2026f, superior);
+    }
+
+    @Test
+    public void histogramaExponencialNegativaFrecuenciaEsperadaTest() {
+        Histograma histoExpNegativa = HistogramaFactory.get(DistribucionEnum.EXPONENCIAL_NEGATIVA, 5);
+        histoExpNegativa.generarHistograma(muestra);
+
+        float primerFE = histoExpNegativa.getIntervalos().get(0).getFrecuenciaEsperada();
+        float segundoFE = histoExpNegativa.getIntervalos().get(1).getFrecuenciaEsperada();
+
+        assertTrue(primerFE > segundoFE);
     }
 }
