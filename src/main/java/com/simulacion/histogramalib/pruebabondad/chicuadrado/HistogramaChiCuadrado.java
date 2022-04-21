@@ -76,6 +76,8 @@ public class HistogramaChiCuadrado {
                 m = 0;
                 break;
             case EXPONENCIAL_NEGATIVA:
+                m = 1;
+                break;
             case POISSON:
                 m = 1;
                 break;
