@@ -147,6 +147,10 @@ public abstract class Histograma {
         return Decimal.of(infActual + rango - DIFF.value()).value();
     }
 
+    public int getCantidadIntervalos() {
+        return cantidadIntervalos;
+    }
+
     @Override
     public String toString() {
         return "Histograma{" +
