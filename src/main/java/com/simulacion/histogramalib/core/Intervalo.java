@@ -5,7 +5,7 @@ public class Intervalo {
     private final float inferior;
     private final float superior;
     private final float marcaClase;
-    private float frecuenciaEsperada;
+    private final float frecuenciaEsperada;
     private int frecuencia;
     private float proporcion;
     private int frecuenciaAcumulada;
