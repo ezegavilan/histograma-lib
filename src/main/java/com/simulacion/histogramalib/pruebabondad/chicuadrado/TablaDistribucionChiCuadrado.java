@@ -9,6 +9,7 @@ public class TablaDistribucionChiCuadrado {
     public TablaDistribucionChiCuadrado() {
         this.tabla = new HashMap<>();
 
+        tabla.put(-1, 999999f);
         tabla.put(1, 7.60f);
         tabla.put(2, 10.59f);
         tabla.put(3, 12.92f);
